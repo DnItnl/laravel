@@ -20,9 +20,6 @@ class Room extends Model
         'password',
     ];
 
-   /**
-     * Get the user that hosts the room.
-     */
     public function host()
     {
         return $this->belongsTo(User::class, 'host_id');
