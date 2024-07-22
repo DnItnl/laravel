@@ -21,8 +21,6 @@ class RoomFactory extends Factory
             'description' => fake()->text(300),
             'host_id' => fake()->numberBetween(1,10),
             'password' => fake()->password,
-            
-            //
         ];
     }
 }

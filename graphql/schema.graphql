@@ -2,6 +2,15 @@
 scalar DateTime
     @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
+
+
+type Mutation {
+  createRoom(name: String!, host_id: ID!, description: String, password: String): Room
+  # updateRoom(id: ID, email: String, password: String): User
+  deleteRoom(id: ID!, host_id: ID!): Room
+}
+
+
 type Query {
     user(id: ID @eq, email: String @eq): User @find
 
@@ -13,7 +22,11 @@ type Query {
     rooms(name: String @where(operator: "like")): [Room!]!
         @paginate(defaultCount: 10)
 
-   
+
+
+
+
+    sounds(sound_kit_id: ID @eq): [sounds!]! @all
 }
 
 type User {
@@ -39,12 +52,14 @@ type Room {
 type Sound {
     id: ID!
     name: String!
-    sound_it: SoundKit!
+    path: String!
+    sound_kit: SoundKit!
+    sound_kit_id: ID!
 }
 
 type SoundKit {
   id: ID!
   name: String!
-  author: User
+#   author: User
   sounds: [Sound!]
 }
