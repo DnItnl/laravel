@@ -9,10 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('sounds', function (Blueprint $table) {
             $table->id();
+            $table->string('icon')->nullable();
+            $table->string('name');
+            $table->string('file_path')->nullable();
+            $table->foreignId('sound_kit_id')->constrained('sound_kits')->onDelete('cascade');
             $table->timestamps();
         });
     }

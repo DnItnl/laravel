@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->foreignId('host_id')->constrained('users')->onDelete('cascade');
             $table->string('password')->nullable();
             $table->timestamps();

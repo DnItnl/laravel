@@ -9,18 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('sound_kits', function (Blueprint $table) {
             $table->id();
+            $table->string('icon')->nullable();
+            $table->string('name');
+            $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('sound_kits');
     }
