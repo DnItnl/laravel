@@ -30,7 +30,6 @@ type Query {
         @paginate(defaultCount: 10)
 
 
-
     soundKit(id: ID! @eq): SoundKit @find
 
     soundKits(name: String @where(operator: "like")): [SoundKit!]!
@@ -104,3 +103,4 @@ input CreateUserInput {
     description: String, 
     password: String
 }
+
