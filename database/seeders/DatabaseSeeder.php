@@ -27,5 +27,10 @@ class DatabaseSeeder extends Seeder
             'password'=> '',
             'host_id'=> 1,
         ]);
+
+        
+
+
+
     }
 }
