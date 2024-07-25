@@ -9,6 +9,8 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    
+    //  protected $hidden = ['password'];
     public function up(): void
     {
         Schema::create('sessions', function (Blueprint $table) {

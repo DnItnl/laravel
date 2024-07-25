@@ -3,30 +3,37 @@ scalar DateTime
     @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 
-
 type Mutation {
-  createRoom(name: String!, host_id: ID!, description: String, password: String): Room
-  # updateRoom(id: ID, email: String, password: String): User
-  deleteRoom(id: ID!, host_id: ID!): Room
+    # Rooms
+    createRoom(input: CreateUserInput!): Room
+    updateRoom(id: ID!, name: String, description: String, password: String, host_id: ID): Room
+    deleteRoom(id: ID!): DeleteResponse
+
+    # Sounds
+    createSoundKit(input: CreateSoundKitInput!): SoundKit 
+    addSoundsToSoundKit(soundKitId: ID!, sounds: [CreateSoundInput!]!): SoundKit
+
 }
 
 
-type Query {
-    user(id: ID @eq, email: String @eq): User @find
 
-    users(name: String @where(operator: "like")): [User!]!
+
+type Query {
+    user(id: ID! @eq): User @find
+
+    users(username: String @where(operator: "like")): [User!]!
         @paginate(defaultCount: 10)
 
-    room(id: ID @eq, email: String @eq): Room @find
+    room(id: ID! @eq): Room @find
 
     rooms(name: String @where(operator: "like")): [Room!]!
         @paginate(defaultCount: 10)
 
 
+    soundKit(id: ID! @eq): SoundKit @find
 
-
-
-    sounds(sound_kit_id: ID @eq): [sounds!]! @all
+    soundKits(name: String @where(operator: "like")): [SoundKit!]!
+        @paginate(defaultCount: 10)
 }
 
 type User {
@@ -34,32 +41,66 @@ type User {
     username: String!
     email: String!
     created_at: DateTime!
-    Rooms: [Room!]
-    room: Room
+    updated_at: DateTime
+    ownedRooms: [Room!]!
+    rooms: [Room!]!
 }
 
 type Room {
     id: ID!
     name: String!
-    description: String!
+    description: String
     host: User!
     host_id: ID!
     password: String
-    Users: [Room!]
+    users: [User!]!
+    created_at: DateTime!
+    updated_at: DateTime
 }
 
 
 type Sound {
     id: ID!
+    icon: String
     name: String!
-    path: String!
-    sound_kit: SoundKit!
-    sound_kit_id: ID!
+    file_path: String!
+    soundKit: SoundKit!
 }
 
 type SoundKit {
-  id: ID!
-  name: String!
-#   author: User
-  sounds: [Sound!]
+    id: ID!
+    icon: String
+    name: String!
+    author: User
+    sounds: [Sound!]!
 }
+
+type DeleteResponse {
+    status: String!
+    message: String!
+}
+
+
+
+# imputs
+
+
+input CreateSoundKitInput {
+    icon: String
+    name: String!
+    authorId: ID
+}
+
+input CreateSoundInput {
+    icon: String
+    name: String!
+    file_path: String
+}
+
+input CreateUserInput {
+    name: String!,
+    host_id: ID!,
+    description: String, 
+    password: String
+}
+

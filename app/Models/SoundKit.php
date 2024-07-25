@@ -8,22 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class SoundKit extends Model
 {
     use HasFactory;
-       /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    
     protected $fillable = [
-        'name',
-        'description',
+        'icon', 
+        'name', 
+        'author_id'
     ];
 
-    public function host()
+    public function sounds()
     {
-        return $this->belongsTo(User::class, 'host_id');
+        return $this->hasMany(Sound::class);
     }
-    public function users()
+
+    public function author()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class, 'author_id');
     }
 }

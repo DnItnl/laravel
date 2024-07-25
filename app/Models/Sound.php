@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Sound extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'icon', 
+        'name', 
+        'file_path',
+        'sound_kit_id'
+    ];
+
+    public function soundKit()
+    {
+        return $this->belongsTo(SoundKit::class);
+    }
 }

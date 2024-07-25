@@ -26,6 +26,6 @@ class Room extends Model
     }
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'room_user', 'room_id', 'user_id');
     }
 }
