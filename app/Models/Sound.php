@@ -10,9 +10,8 @@ class Sound extends Model
     use HasFactory;
 
     protected $fillable = [
-        'icon', 
         'name', 
-        'file_path',
+        'path',
         'sound_kit_id'
     ];
 

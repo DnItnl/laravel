@@ -10,7 +10,6 @@ class SoundKit extends Model
     use HasFactory;
     
     protected $fillable = [
-        'icon', 
         'name', 
         'author_id'
     ];

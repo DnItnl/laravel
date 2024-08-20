@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('sound_kits', function (Blueprint $table) {
             $table->id();
-            $table->string('icon')->nullable();
             $table->string('name');
             $table->foreignId('author_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();

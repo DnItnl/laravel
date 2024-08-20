@@ -3,10 +3,10 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Avatar;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Facades\Storage;
 
 final readonly class UploadAvatar
 {
@@ -17,8 +17,12 @@ final readonly class UploadAvatar
         if (!$user) {
             throw new \Exception('User not authenticated');
         }
-    
 
+        $currentAvatar = Avatar::where('user_id', $user['id'])->first();
+        if ($currentAvatar && $currentAvatar->path) {
+            Storage::disk('public')->delete($currentAvatar->path);
+        }
+    
         $path = $args['file']->store('avatars', 'public');
         $avatar = Avatar::updateOrCreate(
             ['user_id' => $user['id']],

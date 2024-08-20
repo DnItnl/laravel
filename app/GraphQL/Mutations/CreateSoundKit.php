@@ -2,26 +2,37 @@
 
 namespace App\GraphQL\Mutations;
 use App\Models\SoundKit;
-use App\Models\User;
-
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Sound;
+use Illuminate\Support\Facades\Auth;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Http\UploadedFile;
 final readonly class CreateSoundKit
 {
     /** @param  array{}  $args */
-    public function __invoke(null $_, array $args)
+    public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        try {
-            $author = User::findOrFail($args['input']['authorId']);
-        } catch (ModelNotFoundException $e) {
-            throw new \Exception('Author not found.');
+        $user = $context->request->get('user');
+        if (!$user) {
+            throw new \Exception('User not authenticated');
         }
 
-        $soundKit = new SoundKit();
-        $soundKit->name = $args['input']['name'];
-        $soundKit->icon = $args['input']['icon'] ?? 'default_sound_kit_icon';
-        $soundKit->author_id = $author->id;
 
-        $soundKit->save();
+        $soundKit = SoundKit::create([
+            'name' => $args['name'],
+            'author_id' => $user['id'],
+        ]);
+
+        foreach ($args['sounds'] as $soundFile) {
+            /** @var UploadedFile $soundFile */
+            $path = $soundFile->store('sounds', 'public');
+
+            Sound::create([
+                'name' => $soundFile->getClientOriginalName(),
+                'path' => $path,
+                'sound_kit_id' => $soundKit->id,
+            ]);
+        }
 
         return $soundKit;
     }

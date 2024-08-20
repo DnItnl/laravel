@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('sounds', function (Blueprint $table) {
             $table->id();
-            $table->string('icon')->nullable();
             $table->string('name');
-            $table->string('file_path')->nullable();
+            $table->string('path')->nullable();
             $table->foreignId('sound_kit_id')->constrained('sound_kits')->onDelete('cascade');
             $table->timestamps();
         });
