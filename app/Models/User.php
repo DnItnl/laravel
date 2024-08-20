@@ -40,5 +40,9 @@ class User extends Model// extends Authenticatable
     {
         return $this->hasMany(Room::class, 'host_id');
     }
+    public function avatar()
+    {
+    return $this->hasOne(Avatar::class);
+    }
 
 }
